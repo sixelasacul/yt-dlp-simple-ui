@@ -1,0 +1,59 @@
+name: Build and Push Docker Image to GHCR
+
+# Trigger on push to main or manual dispatch
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  # This tells Docker to push to your specific GHCR path
+  # e.g., ghcr.io/yourusername/yt-dlp-simple
+  REGISTRY: ghcr.io
+  IMAGE: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    # Permissions are required to write to the GitHub Container Registry
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 1: Log in to the GitHub Container Registry
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 2: Extract metadata (tags, labels) for the Docker image
+      # This will automatically create a 'latest' tag and a tag based on the commit SHA
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=ref,event=branch
+            type=sha
+            type=latest
+
+      # Step 3: Build and Push the Docker image
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # This helps speed up builds by using the GitHub cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
