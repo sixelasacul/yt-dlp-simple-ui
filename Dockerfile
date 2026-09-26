@@ -7,6 +7,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends ffmpeg curl ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Deno (to satisfy yt-dlp JS requirements)
+RUN curl -fsSL https://deno.land/install.sh | sh -y
+
 # Set the working directory inside the container
 WORKDIR /app
 
