@@ -34,6 +34,7 @@ def run_command():
     elif mode == "audio":
         cmd.extend([
             "-P", AUDIO_DIR,
+            "--audio-format", "opus",    # Request opus output
             "--xattrs",
             "--add-metadata",
             "-o", "%(album)s/%(artist)s - %(title)s.%(ext)s"
@@ -42,6 +43,7 @@ def run_command():
     elif mode == "playlist":
         cmd.extend([
             "-P", AUDIO_DIR,
+            "--audio-format", "opus",    # Request opus output
             "--xattrs",
             "--add-metadata",
             "-o", "%(album)s/%(artist)s - %(title)s.%(ext)s",
@@ -49,17 +51,34 @@ def run_command():
         ])
 
     try:
-        # We use subprocess.run to execute the command
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        
-        if result.returncode == 0:
-            return f"Success! Files saved to the appropriate folder. Output: {result.stdout[:200]}..."
+        # We use Popen instead of run() to allow real-time streaming of the output.
+        # stderr=subprocess.STDOUT redirects error messages into the main stream 
+        # so we can catch both progress and errors in one loop.
+        process = subprocess.Popen(
+            cmd, 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.STDOUT, 
+            text=True
+        )
+
+        # This loop reads the output line-by-line as yt-dlp produces it.
+        # Each line is printed to the server's standard output (the logs).
+        for line in process.stdout:
+            clean_line = line.strip()
+            if clean_line:
+                # This prefix helps you identify yt-dlp output in your log files
+                print(f"[yt-dlp] {clean_line}")
+
+        # Wait for the process to actually finish
+        return_code = process.wait()
+
+        if return_code == 0:
+            return f"Success! Download completed. Check your server logs for details.", 200
         else:
-            return f"Error: {result.stderr}", 400
+            return f"Error: yt-dlp failed with exit code {return_code}", 400
             
     except Exception as e:
         return f"System Error: {str(e)}", 500
 
 if __name__ == '__main__':
-    # host='0.0.0.0' makes it accessible on your local network
     app.run(host='0.0.0.0', port=5000)
