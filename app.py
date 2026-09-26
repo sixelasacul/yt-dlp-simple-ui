@@ -34,6 +34,7 @@ def run_command():
     elif mode == "audio":
         cmd.extend([
             "-P", AUDIO_DIR,
+            "-x",
             "--audio-format", "opus",    # Request opus output
             "--xattrs",
             "--add-metadata",
@@ -43,6 +44,7 @@ def run_command():
     elif mode == "playlist":
         cmd.extend([
             "-P", AUDIO_DIR,
+            "-x",
             "--audio-format", "opus",    # Request opus output
             "--xattrs",
             "--add-metadata",
