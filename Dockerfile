@@ -4,7 +4,7 @@ FROM python:3.11-slim
 # Install ffmpeg (required for yt-dlp to merge video/audio and process audio)
 # We also install curl and ca-certificates for network stability
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg curl ca-certificates && \
+    apt-get install -y --no-install-recommends ffmpeg curl ca-certificates unzip && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Deno (to satisfy yt-dlp JS requirements)
