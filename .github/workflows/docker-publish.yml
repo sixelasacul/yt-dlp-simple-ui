@@ -11,7 +11,7 @@ env:
   # This tells Docker to push to your specific GHCR path
   # e.g., ghcr.io/yourusername/yt-dlp-simple
   REGISTRY: ghcr.io
-  IMAGE: ${{ github.repository }}
+  IMAGE: ghcr.io/${{ github.repository }}
 
 jobs:
   build-and-push:
