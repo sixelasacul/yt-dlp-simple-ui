@@ -43,7 +43,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=sha
-            type=latest
+            type=raw,value=latest
 
       # Step 3: Build and Push the Docker image
       - name: Build and push Docker image
