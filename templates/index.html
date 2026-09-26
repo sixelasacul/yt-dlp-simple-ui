@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>yt-dlp Simple UI</title>
+</head>
+<body>
+    <h1>yt-dlp Downloader</h1>
+    
+    <form action="/run" method="post">
+        <!-- URL Input -->
+        <div>
+            <label for="url">Video/Playlist URL:</label><br>
+            <input type="text" id="url" name="url" placeholder="https://..." required style="width: 400px;">
+        </div>
+
+        <br>
+
+        <!-- Mode Selection -->
+        <div>
+            <label>Download Mode:</label><br>
+            <input type="radio" id="video" name="mode" value="video" checked>
+            <label for="video">Video (saves to /videos)</label><br>
+            
+            <input type="radio" id="audio" name="mode" value="audio">
+            <label for="audio">Audio (saves to /audio)</label><br>
+            
+            <input type="radio" id="playlist" name="mode" value="playlist">
+            <label for="playlist">Playlist Audio (saves to /audio)</label>
+        </div>
+
+        <br>
+
+        <!-- Submit Button -->
+        <button type="submit">Start Download</button>
+    </form>
+</body>
+</html>
