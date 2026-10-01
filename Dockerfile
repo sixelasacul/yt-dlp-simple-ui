@@ -8,8 +8,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Deno and Bun (to satisfy yt-dlp JS requirements and provide fallback for extractors)
-RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh -s -- -y
-RUN curl -fsSL https://bun.com/install | BUN_INSTALL=/usr/local sh
+RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local bash -s -- -y
+RUN curl -fsSL https://bun.com/install | BUN_INSTALL=/usr/local bash
 
 # Set the working directory inside the container
 WORKDIR /app
