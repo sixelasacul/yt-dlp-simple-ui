@@ -7,8 +7,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends ffmpeg curl ca-certificates unzip && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Deno (to satisfy yt-dlp JS requirements)
+# Install Deno and Bun (to satisfy yt-dlp JS requirements and provide fallback for extractors)
 RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh -s -- -y
+RUN curl -fsSL https://bun.com/install | BUN_INSTALL=/usr/local sh
 
 # Set the working directory inside the container
 WORKDIR /app
