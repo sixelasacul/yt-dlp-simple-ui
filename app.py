@@ -1,53 +1,16 @@
 import os
-import subprocess
 import threading
 from uuid import uuid4
 
 from flask import Flask, render_template, request
+from yt_dlp import YoutubeDL, _Params
 
 app = Flask(__name__)
 
-# Configuration
 VIDEO_DIR = "videos"
 AUDIO_DIR = "audio"
-
-# Ensure directories exist
 os.makedirs(VIDEO_DIR, exist_ok=True)
 os.makedirs(AUDIO_DIR, exist_ok=True)
-
-# Global state for HTMX polling
-latest_log = "Ready to download..."
-is_running = False
-
-
-def run_yt_dlp_task(cmd):
-    """Runs the yt-dlp process in a separate thread to avoid blocking the UI."""
-    global latest_log, is_running
-    is_running = True
-    try:
-        # stdout=subprocess.PIPE and stderr=subprocess.STDOUT allows us to
-        # capture both progress and errors in a single stream.
-        process = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
-        )
-
-        for line in process.stdout:
-            clean_line = line.strip()
-            if clean_line:
-                latest_log = clean_line
-                # This prints to your server/docker logs
-                print(f"[yt-dlp] {clean_line}")
-
-        process.wait()
-        is_running = False
-        latest_log = (
-            "Task completed successfully!"
-            if process.returncode == 0
-            else "Task failed!"
-        )
-    except Exception as e:
-        latest_log = f"System Error: {str(e)}"
-        is_running = False
 
 
 @app.route("/")
@@ -55,10 +18,37 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/log")
+@app.get("/log")
 def get_log():
     """Endpoint for HTMX to poll the latest log message."""
-    return latest_log
+
+
+@app.post("/download")
+def download():
+    # get form data
+    # should check if it get decoded
+    search = request.form.get("search")
+    url = request.form.get("url")
+    type = request.form.get("type")
+
+    # prepare log file
+    id = uuid4()
+    with open(f"{id}.txt", "x") as f:
+        f.close()
+
+    opts: _Params = {}
+
+    if type == "video":
+        opts["paths"] = {"home": "videos"}
+
+    if type == "audio":
+        opts = {
+            "outtmpl": {"default": "%(album)s/%(title)s.%(ext)s"},
+            "postprocessors": [],
+        }
+
+    with YoutubeDL(opts) as ydl:
+        ydl.download([url])
 
 
 @app.route("/run", methods=["POST"])
