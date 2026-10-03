@@ -41,9 +41,23 @@ async function saveHandler(req: Request) {
 		stdin: 'piped',
 		stdout: 'piped',
 		args: [ytDlpInput, ...TYPE_ARGS[source](uuid)],
+		signal: undefined,
 	});
 	const child = command.spawn();
-	child.stdout.pipeTo;
+	// stores logs to be inspected client side during download
+	// should mostly be progress info, or could be two different files
+	// well then what about using a simple sqlite file?
+	child.stdout.pipeTo(
+		Deno.openSync(`${uuid}.logs.txt`, { write: true, create: true }).writable,
+	);
+	child.stdin.close();
+	child.pid;
+
+	const pidFile = Deno.openSync(`${uuid}.pid.txt`, {
+		write: true,
+		create: true,
+	});
+	pidFile.writeSync(new TextEncoder().encode(child.pid.toString()));
 
 	return new Response();
 }

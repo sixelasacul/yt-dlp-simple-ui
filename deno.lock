@@ -12,6 +12,7 @@
     "jsr:@std/net@^1.0.7": "1.0.7",
     "jsr:@std/path@^1.1.6": "1.1.6",
     "jsr:@std/streams@^1.2.0": "1.2.0",
+    "npm:arktype@*": "2.2.7",
     "npm:arktype@^2.2.7": "2.2.7"
   },
   "jsr": {
@@ -90,7 +91,8 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/http@1"
+      "jsr:@std/http@1",
+      "npm:arktype@*"
     ],
     "packageJson": {
       "dependencies": [
