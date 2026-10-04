@@ -21,6 +21,11 @@
     "@std/http": "jsr:@std/http@1",
     "arktype": "npm:arktype"
   },
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": true,
+    "exactOptionalPropertyTypes": true
+  },
   "fmt": {
     "include": ["./"],
     "useTabs": true,

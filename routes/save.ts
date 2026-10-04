@@ -1,4 +1,3 @@
-import { serveFile } from '@std/http';
 import { type } from 'arktype';
 import { prepareRoute } from './utils.ts';
 import { trackArgs } from '../sources/track.ts';
@@ -6,6 +5,7 @@ import { videoArgs } from '../sources/video.ts';
 import { albumArgs } from '../sources/album.ts';
 import { Source, SourceType } from '../sources/types.ts';
 import { prepareSearch } from '../sources/search.ts';
+import * as db from '../db/jobs.ts';
 
 const SaveFormData = type('FormData.parse').to({
 	source: SourceType,
@@ -41,12 +41,9 @@ async function saveHandler(req: Request) {
 		stdin: 'piped',
 		stdout: 'piped',
 		args: [ytDlpInput, ...TYPE_ARGS[source](uuid)],
-		signal: undefined,
 	});
 	const child = command.spawn();
-	// stores logs to be inspected client side during download
-	// should mostly be progress info, or could be two different files
-	// well then what about using a simple sqlite file?
+	db.startJob();
 	child.stdout.pipeTo(
 		Deno.openSync(`${uuid}.logs.txt`, { write: true, create: true }).writable,
 	);
