@@ -6,6 +6,10 @@ Bare bone, simple UI for yt-dlp to be self host on your homelab.
 
 First versions of this project was entirely written with local AI (Flask). Since I moved to Deno, it's now entirely written by hand.
 
+## Architecture
+
+To know more about how this project is built, have a look at the [`ARCHITECTURE.md`]("ARCHITECTURE.md") file.
+
 ## Notes
 
 - Proper log streaming
