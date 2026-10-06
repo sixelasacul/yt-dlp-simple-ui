@@ -1,4 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
+import { randomUUID } from 'node:crypto';
 import _appendLogs from './append-logs.sql' with { type: 'text' };
 import _create from './create.sql' with { type: 'text' };
 import _insert from './insert.sql' with { type: 'text' };
@@ -30,12 +31,12 @@ function addJob(
 ) {
 	const statement = db.prepare(_insert);
 	statement.run({
-		id,
-		status,
-		pid,
-		progress,
-		user_input,
-		logs: JSON.stringify(logs),
+		':id': id,
+		':status': status,
+		':pid': pid,
+		':progress': progress,
+		':user_input': user_input,
+		':logs': logs,
 	});
 }
 
@@ -54,11 +55,11 @@ export function updateJob(
 ) {
 	const statement = db.prepare(_update);
 	statement.run({
-		'?status': status,
-		'?progress': progress,
-		'?user_input': user_input,
-		'?logs': logs,
-		'?id': id,
+		':status': status,
+		':progress': progress,
+		':user_input': user_input,
+		':logs': logs,
+		':id': id,
 	});
 }
 export function appendLogs(
@@ -67,13 +68,13 @@ export function appendLogs(
 ) {
 	const statement = db.prepare(_appendLogs);
 	statement.run({
-		'?logs': logs,
-		'?id': id,
+		':logs': logs,
+		':id': id,
 	});
 }
 
 export function startJob(pid: number, user_input: string) {
-	const id = crypto.randomUUID();
+	const id = randomUUID();
 	addJob({ id, status: 'started', pid, progress: 0, user_input, logs: '' });
 	return id;
 }
@@ -91,7 +92,7 @@ const JobRow = type({
 // error handling to be done
 export function getJob(id: string) {
 	const query = db.prepare(_selectOne);
-	const result = query.get({ '?id': id });
+	const result = query.get({ ':id': id });
 
 	if (result) throw new Error('Job not found');
 
@@ -105,7 +106,7 @@ export function getJob(id: string) {
 
 export function getJobs(limit = 10) {
 	const query = db.prepare(_selectLimit);
-	const result = query.all({ '?limit': limit });
+	const result = query.all({ ':limit': limit });
 	const jobs = JobRow.array()(result);
 	if (jobs instanceof type.errors) {
 		return jobs.throw();

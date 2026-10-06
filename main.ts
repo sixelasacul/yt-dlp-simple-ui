@@ -1,6 +1,9 @@
+import { init } from './db/jobs.ts';
 import { home } from './routes/home.ts';
 import { save } from './routes/save.ts';
 import { trackJob } from './routes/track-job.ts';
+
+init();
 
 export default {
 	fetch(req) {

@@ -10,7 +10,7 @@
       },
       "net": true,
       "run": {
-        "allow": ["ytp-dlp"]
+        "allow": ["/usr/bin/yt-dlp"]
       }
     }
   },

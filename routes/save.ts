@@ -10,12 +10,13 @@ import * as db from '../db/jobs.ts';
 const SaveParams = type({
 	source: SourceType,
 	url: 'string.url',
-	search: 'never',
+	'search': 'null = null',
 }).or({
 	source: SourceType,
-	url: 'never',
+	'url': 'null = null',
 	search: 'string',
 });
+
 const SaveFormData = type('FormData.parse').to(SaveParams);
 
 const TYPE_ARGS: Record<Source, (id: string) => string[]> = {
@@ -35,7 +36,7 @@ async function saveHandler(req: Request) {
 
 	const ytDlpInput = source !== 'video' && search
 		? prepareSearch(search, source)
-		: url;
+		: url!;
 
 	const command = new Deno.Command('yt-dlp', {
 		stdin: 'null',

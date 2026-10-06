@@ -1,3 +1,1 @@
-SELECT *
-FROM jobs
-WHERE id = ?id;
+SELECT * FROM jobs WHERE id = :id;

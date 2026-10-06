@@ -10,5 +10,5 @@ CREATE TABLE IF NOT EXISTS jobs(
   -- for tracking if needed
   user_input TEXT DEFAULT "",
   logs TEXT DEFAULT "",
-  started_at INTEGER DEFAULT unixepoch()
+  started_at INTEGER DEFAULT unixepoch
 );
