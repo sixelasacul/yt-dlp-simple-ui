@@ -42,4 +42,4 @@ With tools like [Coolify](https://coolify.io/) running on your own server, it's 
 
 ### CI
 
-Since this codebase is currently hosted on GitHub, it uses GitHub Actions to build the Docker image, and publish it on GitHub registry.
+Since this codebase is currently hosted on GitHub, it uses GitHub Actions to build the Docker image, and publish it on [GitHub registry](https://github.com/sixelasacul/yt-dlp-simple-ui/pkgs/container/yt-dlp-simple-ui).

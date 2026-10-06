@@ -1,9 +1,7 @@
 import { serveFile } from '@std/http';
-import { prepareRoute } from './utils.ts';
+import { checkRoute, Route } from './utils.ts';
 
-const homePattern = new URLPattern({ pathname: '/' });
-function homeHandler(req: Request) {
-	return serveFile(req, 'index.html');
-}
-
-export const homeRoute = prepareRoute('GET', homePattern, homeHandler);
+export const home: Route = {
+	checker: checkRoute('GET', new URLPattern({ pathname: '/' })),
+	handler: (req) => serveFile(req, 'index.html'),
+};

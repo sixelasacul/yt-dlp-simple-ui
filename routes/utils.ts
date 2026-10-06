@@ -1,11 +1,11 @@
-export function prepareRoute(
-	method: string,
-	pattern: URLPattern,
-	handler: (req: Request) => Response | Promise<Response>,
-) {
+export type Route = {
+	checker(req: Request): boolean;
+	handler(req: Request): Response | Promise<Response>;
+};
+
+export function checkRoute(method: string, pattern: URLPattern) {
 	return function (req: Request) {
-		if (pattern.test(req.url) && req.method === method) {
-			return handler;
-		}
+		return pattern.test(req.url) &&
+			req.method === method;
 	};
 }

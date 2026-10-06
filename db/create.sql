@@ -1,14 +1,14 @@
 CREATE TABLE IF NOT EXISTS jobs(
   -- uuid
   id TEXT PRIMARY KEY,
-  -- in_progress, finished, failed, stop
-  status TEXT,
+  -- started, running, finished, failed, stopped
+  status TEXT DEFAULT "started",
   -- yt-dlp process
   pid INTEGER,
   -- 0 to 100
-  progress INTEGER,
+  progress INTEGER DEFAULT 0,
   -- for tracking if needed
-  user_input TEXT,
-  logs TEXT,
+  user_input TEXT DEFAULT "",
+  logs TEXT DEFAULT "",
   started_at INTEGER DEFAULT unixepoch()
 );

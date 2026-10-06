@@ -3,10 +3,10 @@
   "permissions": {
     "default": {
       "read": {
-        "allow": ["./audio", "./video"]
+        "allow": ["./index.html", "./jobs.db", "./audio", "./video"]
       },
       "write": {
-        "allow": ["./audio", "./video"]
+        "allow": ["./jobs.db", "./audio", "./video"]
       },
       "net": true,
       "run": {
@@ -14,6 +14,7 @@
       }
     }
   },
+  "unstable": ["raw-imports"],
   "tasks": {
     "dev": "deno serve --watch -R main.ts"
   },
