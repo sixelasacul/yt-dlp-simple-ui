@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>yt-dlp-simple-ui</title>
+    <script src="https://unpkg.com/htmx.org@latest"></script>
+  </head>
+  <body>
+    <div class="card">
+      <h1>yt-dlp Downloader</h1>
+
+      <form action="/save" method="post" id="dl-form">
+        <input
+          type="text"
+          name="url"
+          placeholder="Paste URL here..."
+          required
+        />
+
+        <label
+          ><input type="radio" name="source" value="video" checked />
+          Video</label
+        ><br />
+        <label><input type="radio" name="source" value="track" /> Track </label
+        ><br />
+        <label><input type="radio" name="source" value="album" /> Album</label>
+
+        <button type="submit" id="submit-btn">Start Download</button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+	"name": "yt-dlp-simple-ui",
+	"dependencies": {
+		"arktype": "^2.2.7"
+	}
+}

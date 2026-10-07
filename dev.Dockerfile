@@ -20,4 +20,4 @@ COPY . .
 # Create the download directories inside the container
 RUN mkdir -p /app/videos /app/audio
 
-CMD ["deno", "serve", "-P", "main.ts"]
+CMD ["deno", "serve", "--watch", "-P", "main.ts"]
