@@ -10,6 +10,12 @@ First versions of this project was entirely written with local AI (Flask). Since
 
 To know more about how this project is built, have a look at the [`ARCHITECTURE.md`]("ARCHITECTURE.md") file.
 
+## Development
+
+```sh
+podman compose --file ./docker-compose.dev.yml up --build
+```
+
 ## Notes
 
 - Proper log streaming

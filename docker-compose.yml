@@ -1,0 +1,11 @@
+services:
+  yt-dlp-simple-ui:
+    image: yt-dlp-simple-ui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - './audio:/app/audio'
+      - './video:/app/video'
